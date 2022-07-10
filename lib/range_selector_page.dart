@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_foundations/randomizer_page.dart';
+import 'package:flutter_foundations/range_selector_form.dart';
 
 class RangeSelectorPage extends StatefulWidget {
   const RangeSelectorPage({Key? key}) : super(key: key);
@@ -8,50 +10,37 @@ class RangeSelectorPage extends StatefulWidget {
 }
 
 class _RangeSelectorPageState extends State<RangeSelectorPage> {
+  final formKey = GlobalKey<FormState>();
+  int _min = 0;
+  int _max = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Select Range'),
       ),
-      body: Form(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Minimum',
-                ),
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: false,
-                  signed: true,
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Maximum',
-                ),
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: false,
-                  signed: true,
-                ),
-              ),
-            ],
-          ),
-        ),
+      body: RangeSelectorForm(
+        formKey: formKey,
+        minValueSetter: (value) => _min = value,
+        maxValueSetter: (value) => _max = value,
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.arrow_forward),
         elevation: 0,
         onPressed: () {
-          // TODO: Validate the Form
-          //TODO: Navigate to the generator page
+          if (formKey.currentState?.validate() == true) {
+            formKey.currentState?.save();
+          }
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => RandomizerPage(
+                min: _min,
+                max: _max,
+              ),
+            ),
+          );
         },
+        child: const Icon(Icons.arrow_forward),
       ),
     );
   }
