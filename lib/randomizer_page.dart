@@ -6,9 +6,7 @@ import 'package:flutter_foundations/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RandomizerPage extends ConsumerWidget {
-  RandomizerPage({
-    Key? key,
-  }) : super(key: key);
+  RandomizerPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,7 +28,7 @@ class RandomizerPage extends ConsumerWidget {
         elevation: 0,
         label: const Text('Generate'),
         onPressed: () {
-          ref.read(randomizerProvider).generateRandomNumber();
+          ref.read(randomizerProvider.notifier).generateRandomNumber();
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
